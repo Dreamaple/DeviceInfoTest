@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.hardware.Camera;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -26,6 +27,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.getcputemp.deviceinfotest.config.SharedPreferencesNames;
+import com.getcputemp.deviceinfotest.model.BatteryInfo;
 import com.getcputemp.deviceinfotest.network.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -731,5 +733,39 @@ public class DeviceInfo {
         }
         return null;
 
+    }
+    public BatteryInfo getBattery(){
+        int i = 0;
+        BatteryInfo batteryInfo = new BatteryInfo();
+        String[] url={"/sys/class/power_supply/usb/online",
+                "/sys/class/power_supply/battery/status",
+                "/sys/class/power_supply/battery/health",
+                "/sys/class/power_supply/battery/present",
+                "/sys/class/power_supply/battery/capacity",
+                "/sys/class/power_supply/battery/batt_vol",
+                "/sys/class/power_supply/battery/batt_temp",
+                "/sys/class/power_supply/battery/technology"
+        };
+        String[] temp = new String[]{"","","","","","","",""};
+        try {
+            for(i = 0 ; i <= url.length-1;i++){
+            FileReader fr = new FileReader(url[i]);
+            BufferedReader localBufferedReader = new BufferedReader(fr);
+            while ((temp[i]=localBufferedReader.readLine()) != null) {
+            }
+            localBufferedReader.close();
+            }
+        } catch (IOException e) {
+            Log.e("111111111",e.toString());
+        }
+        batteryInfo.setUsbOnline(temp[0]);
+        batteryInfo.setBatteryStatus(temp[1]);
+        batteryInfo.setBatteryHealth(temp[2]);
+        batteryInfo.setBatteryPresent(temp[3]);
+        batteryInfo.setBatteryCapacity(temp[4]);
+        batteryInfo.setBatteryBattVol(temp[5]);
+        batteryInfo.setBatteryBattTemp(temp[6]);
+        batteryInfo.setBatteryTechnology(temp[7]);
+        return batteryInfo;
     }
 }

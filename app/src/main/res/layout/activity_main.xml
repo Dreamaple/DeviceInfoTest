@@ -23,82 +23,158 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:visibility="visible">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/ll_main_base_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="基本信息" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="基本信息" />
 
-            <TextView
-                android:id="@+id/tv_main_phone_modle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_phone_modle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_rear_camera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_rear_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_front_camera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_front_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_cpu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_cpu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_screen_size"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_screen_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_rom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_rom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_ram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_ram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_android_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_android_version"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/tv_main_resolution"
+                <TextView
+                    android:id="@+id/tv_main_resolution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_sdcard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+                <TextView
+                    android:id="@+id/tv_main_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_main_base_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
-            <TextView
-                android:id="@+id/tv_main_sdcard"
+                android:text="hide"/>
+            <LinearLayout
+                android:id="@+id/ll_main_battery_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="基本信息" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_health"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_present"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_capacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_batt_vol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_batt_temp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_battery_technology"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_main_usb_online"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_main_battery_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
-            <TextView
-                android:id="@+id/tv_main_root"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:text="hide"/>
         </LinearLayout>
-
     </ScrollView>
 
 
