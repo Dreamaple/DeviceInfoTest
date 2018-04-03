@@ -79,7 +79,7 @@ public class DeviceInfo {
 	
 	public String getClientId(){
 		String clientId = "";
-		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.SP_Name_ClientId, Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.INSTANCE.getSP_Name_ClientId(), Context.MODE_PRIVATE);
 		clientId = sp.getString("cid", "");
 		clientId = clientId.trim();
 		return clientId;
@@ -87,7 +87,7 @@ public class DeviceInfo {
 	
 	public void setClientId(String clientId)
 	{
-		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.SP_Name_ClientId, Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.INSTANCE.getSP_Name_ClientId(), Context.MODE_PRIVATE);
 		Editor spEditor = sp.edit();
 		spEditor.putString("cid", clientId);
 		spEditor.apply();
@@ -293,7 +293,7 @@ public class DeviceInfo {
 	public String getReferrer()
 	{
 		String referrer = "";
-		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.SP_Name_ClientId, Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.INSTANCE.getSP_Name_ClientId(), Context.MODE_PRIVATE);
 		referrer = sp.getString("referrer", "");
 		if(referrer == null) {
 			referrer = "";
@@ -304,7 +304,7 @@ public class DeviceInfo {
 
 	public void setReferrer(String referrer)
 	{
-		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.SP_Name_ClientId, Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(SharedPreferencesNames.INSTANCE.getSP_Name_ClientId(), Context.MODE_PRIVATE);
 		Editor spEditor = sp.edit();
 		spEditor.putString("referrer", referrer);
 		spEditor.apply();
