@@ -677,7 +677,7 @@ public class DeviceInfo {
 
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        //获取屏幕的款和高
+        //获取屏幕的宽和高
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
 //        Log.e("11111111",""+dm.xdpi);

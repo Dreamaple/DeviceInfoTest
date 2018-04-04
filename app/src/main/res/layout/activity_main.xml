@@ -27,10 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_main_base_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="hide"/>
             <LinearLayout
                 android:id="@+id/ll_main_base_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -103,8 +109,9 @@
                     android:text="@string/app_name" />
 
             </LinearLayout>
+
             <Button
-                android:id="@+id/btn_main_base_info"
+                android:id="@+id/btn_main_battery_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="hide"/>
@@ -113,7 +120,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
+                <ImageView
+                    android:id="@+id/iv_main_battery_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_launcher"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,11 +186,6 @@
 
 
             </LinearLayout>
-            <Button
-                android:id="@+id/btn_main_battery_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="hide"/>
         </LinearLayout>
     </ScrollView>
 

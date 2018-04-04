@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
+        b_baseInfo=if(ll_main_base_info.visibility==View.VISIBLE){true}else{false}
+        b_batteryInfo=if(ll_main_battery_info.visibility==View.VISIBLE){true}else{false}
         deviceInfo = DeviceInfo.getInstance(applicationContext)
         batteryInfoBean = deviceInfo!!.battery
                 pb_main_loading.visibility = View.VISIBLE
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         tv_main_screen_size.text = "屏幕尺寸"+deviceInfo!!.getScreenSizeInInch(this@MainActivity)
         tv_main_root.text = "ROOT："+deviceInfo!!.hasRootPermission()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            tv_main_cpu.text="CPU："+deviceInfo!!.getCpuInfo()[0]+deviceInfo!!.getCpuInfo()[1]
+            tv_main_cpu.text="CPU："+deviceInfo!!.getCpuName()
         }else{
             tv_main_cpu.text="CPU："+android.os.Build.CPU_ABI
         }
@@ -72,14 +74,7 @@ class MainActivity : AppCompatActivity() {
             takePhoto()
         }
 //        tv_main_battery_now.text =
-        tv_main_battery_status.text = batteryInfoBean.batteryStatus
-        tv_main_battery_health.text = batteryInfoBean.batteryHealth
-        tv_main_battery_present.text = batteryInfoBean.batteryPresent
-        tv_main_battery_capacity.text = batteryInfoBean.batteryCapacity
-        tv_main_battery_batt_vol.text = batteryInfoBean.batteryBattVol
-        tv_main_battery_batt_temp.text = batteryInfoBean.batteryBattTemp
-        tv_main_battery_technology.text = batteryInfoBean.batteryTechnology
-        tv_main_usb_online.text = batteryInfoBean.usbOnline
+
         getBattery()
         btn_main_base_info.setOnClickListener {
             if (b_baseInfo){
@@ -117,8 +112,16 @@ class MainActivity : AppCompatActivity() {
     public fun  eventThread(eventInfoMessage: EventInfoMessage<BatteryInfoBean> ) {
         when(eventInfoMessage.tempFlag){
             0->{
-                tv_main_battery_batt_vol.text = eventInfoMessage.infoData!!.batteryBattVol
-                tv_main_battery_batt_temp.text = eventInfoMessage.infoData!!.batteryBattTemp
+                tv_main_battery_now.text ="当前电量："+eventInfoMessage.infoData!!.batteryLevel
+                tv_main_battery_batt_vol.text ="电池电压："+ eventInfoMessage.infoData!!.batteryBattVol
+                tv_main_battery_batt_temp.text ="电池温度："+ eventInfoMessage.infoData!!.batteryBattTemp
+                tv_main_battery_status.text ="电池状态："+ eventInfoMessage.infoData!!.batteryStatus
+                tv_main_battery_health.text ="健康状态："+ eventInfoMessage.infoData!!.batteryHealth
+                tv_main_battery_present.text ="是否存在电池："+ eventInfoMessage.infoData!!.batteryPresent
+                tv_main_battery_capacity.text ="电池总容量："+ eventInfoMessage.infoData!!.batteryCapacity
+                tv_main_battery_technology.text ="电池技术："+ eventInfoMessage.infoData!!.batteryTechnology
+                tv_main_usb_online.text ="充电方式："+ eventInfoMessage.infoData!!.usbOnline
+                iv_main_battery_icon.setImageResource(eventInfoMessage.infoData!!.iconSmallId)
             }
         }
     }

@@ -7,7 +7,9 @@ class BatteryInfoBean(){
     var batteryHealth:String=""
     var batteryPresent:String=""
     var batteryCapacity:String=""
+    var batteryLevel:String=""
     var batteryBattVol:String=""
     var batteryBattTemp:String=""
     var batteryTechnology:String=""
+    var iconSmallId:Int=0
 }
