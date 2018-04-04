@@ -10,20 +10,28 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.content.pm.PackageManager
 import android.os.Build
-import com.getcputemp.deviceinfotest.model.BatteryInfo
+import com.getcputemp.deviceinfotest.model.BatteryInfoBean
+import android.content.Intent
+import android.content.IntentFilter
+import com.getcputemp.deviceinfotest.broadcastReceiver.BatteryInfoBroadcastReceiver
+import com.getcputemp.deviceinfotest.model.EventInfoMessage
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class MainActivity : AppCompatActivity() {
     var deviceInfo:DeviceInfo?=null
-    var batteryInfo:BatteryInfo= BatteryInfo()
+    var batteryInfoBean: BatteryInfoBean = BatteryInfoBean()
     var b_baseInfo:Boolean = true
     var b_batteryInfo:Boolean = true
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        EventBus.getDefault().register(this)
         deviceInfo = DeviceInfo.getInstance(applicationContext)
-        batteryInfo = deviceInfo!!.battery
+        batteryInfoBean = deviceInfo!!.battery
                 pb_main_loading.visibility = View.VISIBLE
         initView()
 //        tv_main_phone_modle.
@@ -63,14 +71,16 @@ class MainActivity : AppCompatActivity() {
                 ,arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE),200)){
             takePhoto()
         }
-        tv_main_battery_status.text = batteryInfo.batteryStatus
-        tv_main_battery_health.text = batteryInfo.batteryHealth
-        tv_main_battery_present.text = batteryInfo.batteryPresent
-        tv_main_battery_capacity.text = batteryInfo.batteryCapacity
-        tv_main_battery_batt_vol.text = batteryInfo.batteryBattVol
-        tv_main_battery_batt_temp.text = batteryInfo.batteryBattTemp
-        tv_main_battery_technology.text = batteryInfo.batteryTechnology
-        tv_main_usb_online.text = batteryInfo.usbOnline
+//        tv_main_battery_now.text =
+        tv_main_battery_status.text = batteryInfoBean.batteryStatus
+        tv_main_battery_health.text = batteryInfoBean.batteryHealth
+        tv_main_battery_present.text = batteryInfoBean.batteryPresent
+        tv_main_battery_capacity.text = batteryInfoBean.batteryCapacity
+        tv_main_battery_batt_vol.text = batteryInfoBean.batteryBattVol
+        tv_main_battery_batt_temp.text = batteryInfoBean.batteryBattTemp
+        tv_main_battery_technology.text = batteryInfoBean.batteryTechnology
+        tv_main_usb_online.text = batteryInfoBean.usbOnline
+        getBattery()
         btn_main_base_info.setOnClickListener {
             if (b_baseInfo){
                 ll_main_base_info.visibility = View.GONE
@@ -91,5 +101,25 @@ class MainActivity : AppCompatActivity() {
     private fun takePhoto() {
         tv_main_front_camera.text = "前置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasFrontCamera())
         tv_main_rear_camera.text = "后置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasBackCamera());
+    }
+    private fun getBattery(){
+        val receiver = BatteryInfoBroadcastReceiver()
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        this@MainActivity.registerReceiver(receiver, filter)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public fun  eventThread(eventInfoMessage: EventInfoMessage<BatteryInfoBean> ) {
+        when(eventInfoMessage.tempFlag){
+            0->{
+                tv_main_battery_batt_vol.text = eventInfoMessage.infoData!!.batteryBattVol
+                tv_main_battery_batt_temp.text = eventInfoMessage.infoData!!.batteryBattTemp
+            }
+        }
     }
 }

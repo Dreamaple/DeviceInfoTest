@@ -1,6 +1,5 @@
 package com.getcputemp.deviceinfotest.Util;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -15,7 +14,6 @@ import android.content.res.Resources;
 import android.hardware.Camera;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -27,7 +25,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.getcputemp.deviceinfotest.config.SharedPreferencesNames;
-import com.getcputemp.deviceinfotest.model.BatteryInfo;
+import com.getcputemp.deviceinfotest.model.BatteryInfoBean;
 import com.getcputemp.deviceinfotest.network.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -734,9 +731,9 @@ public class DeviceInfo {
         return null;
 
     }
-    public BatteryInfo getBattery(){
+    public BatteryInfoBean getBattery(){
         int i = 0;
-        BatteryInfo batteryInfo = new BatteryInfo();
+        BatteryInfoBean batteryInfoBean = new BatteryInfoBean();
         String[] url={"/sys/class/power_supply/usb/online",
                 "/sys/class/power_supply/battery/status",
                 "/sys/class/power_supply/battery/health",
@@ -758,14 +755,14 @@ public class DeviceInfo {
         } catch (IOException e) {
             Log.e("111111111",e.toString());
         }
-        batteryInfo.setUsbOnline(temp[0]);
-        batteryInfo.setBatteryStatus(temp[1]);
-        batteryInfo.setBatteryHealth(temp[2]);
-        batteryInfo.setBatteryPresent(temp[3]);
-        batteryInfo.setBatteryCapacity(temp[4]);
-        batteryInfo.setBatteryBattVol(temp[5]);
-        batteryInfo.setBatteryBattTemp(temp[6]);
-        batteryInfo.setBatteryTechnology(temp[7]);
-        return batteryInfo;
+        batteryInfoBean.setUsbOnline(temp[0]);
+        batteryInfoBean.setBatteryStatus(temp[1]);
+        batteryInfoBean.setBatteryHealth(temp[2]);
+        batteryInfoBean.setBatteryPresent(temp[3]);
+        batteryInfoBean.setBatteryCapacity(temp[4]);
+        batteryInfoBean.setBatteryBattVol(temp[5]);
+        batteryInfoBean.setBatteryBattTemp(temp[6]);
+        batteryInfoBean.setBatteryTechnology(temp[7]);
+        return batteryInfoBean;
     }
 }
