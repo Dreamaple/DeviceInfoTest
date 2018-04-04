@@ -18,11 +18,15 @@ import com.getcputemp.deviceinfotest.model.EventInfoMessage
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorManager
+
+
 
 
 class MainActivity : AppCompatActivity() {
     var deviceInfo:DeviceInfo?=null
-    var batteryInfoBean: BatteryInfoBean = BatteryInfoBean()
     var b_baseInfo:Boolean = true
     var b_batteryInfo:Boolean = true
     @SuppressLint("SetTextI18n")
@@ -33,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         b_baseInfo=if(ll_main_base_info.visibility==View.VISIBLE){true}else{false}
         b_batteryInfo=if(ll_main_battery_info.visibility==View.VISIBLE){true}else{false}
         deviceInfo = DeviceInfo.getInstance(applicationContext)
-        batteryInfoBean = deviceInfo!!.battery
                 pb_main_loading.visibility = View.VISIBLE
         initView()
 //        tv_main_phone_modle.
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         tv_main_rom.text = "ROM："+deviceInfo!!.formatSize(deviceInfo!!.romMemroy.get(0))
         tv_main_screen_size.text = "屏幕尺寸"+deviceInfo!!.getScreenSizeInInch(this@MainActivity)
         tv_main_root.text = "ROOT："+deviceInfo!!.hasRootPermission()
+        getSensorList()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tv_main_cpu.text="CPU："+deviceInfo!!.getCpuName()
         }else{
@@ -125,4 +129,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getSensorList() {
+        // 获取传感器管理器
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        // 获取全部传感器列表
+        val sensors = sensorManager.getSensorList(Sensor.TYPE_ALL)
+
+        // 打印每个传感器信息
+        val strLog = StringBuilder()
+        var iIndex = 1
+        for (item in sensors) {
+            strLog.append(iIndex.toString() + ".")
+            strLog.append(" Sensor Type - " + item.type + "\r\n")
+            strLog.append(" Sensor Name - " + item.name + "\r\n")
+            strLog.append(" Sensor Version - " + item.version + "\r\n")
+            strLog.append(" Sensor Vendor - " + item.vendor + "\r\n")
+            strLog.append(" Maximum Range - " + item.maximumRange + "\r\n")
+            strLog.append(" Minimum Delay - " + item.minDelay + "\r\n")
+            strLog.append(" Power - " + item.power + "\r\n")
+            strLog.append(" Resolution - " + item.resolution + "\r\n")
+            strLog.append("\r\n")
+            iIndex++
+        }
+        println(strLog.toString())
+        tv_main_senser_list.text=strLog.toString()
+    }
+
+
 }

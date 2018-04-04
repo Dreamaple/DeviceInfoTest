@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -39,6 +41,7 @@ import java.io.PrintWriter;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -707,62 +710,34 @@ public class DeviceInfo {
         return null;
 
     }
-    public String getCpuinfo1(){
 
-        String str1 = "/proc/cpuinfo";
-        String[] str2 = new String[10];
-        int i = 0;
-        try {
-            FileReader fr = new FileReader(str1);
-            BufferedReader localBufferedReader = new BufferedReader(fr);
-            while ((str2[i]=localBufferedReader.readLine()) != null) {
-                if (str2[i].contains("Hardware")) {
-                    str2[i] = str2[i].split(":")[1];
-                    i++;
-                }
-                if(str2[i].contains("Hardware")) {
-                    str2[i] = str2[i].split(":")[1];
-                    i++;
-                }
-            }
-            localBufferedReader.close();
-        } catch (IOException e) {
+    public int[] getSenser(Activity context){
+        int[] senserCompare = {1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20};
+        int[] senserType = new int[0];
+        // 获取传感器管理器
+        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+
+        // 获取全部传感器列表
+        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        // 打印每个传感器信息
+        StringBuilder strLog = new StringBuilder();
+        int iIndex = 1;
+        for (Sensor item : sensors) {
+            senserType[iIndex-1]= Integer.parseInt(item.getName());
+//            strLog.append(iIndex + ".");
+//            strLog.append(" Sensor Type - " + item.getType() + "\r\n");
+//            strLog.append(" Sensor Name - " + item.getName() + "\r\n");
+//            strLog.append(" Sensor Version - " + item.getVersion() + "\r\n");
+//            strLog.append(" Sensor Vendor - " + item.getVendor() + "\r\n");
+//            strLog.append(" Maximum Range - " + item.getMaximumRange() + "\r\n");
+//            strLog.append(" Minimum Delay - " + item.getMinDelay() + "\r\n");
+//            strLog.append(" Power - " + item.getPower() + "\r\n");
+//            strLog.append(" Resolution - " + item.getResolution() + "\r\n");
+//            strLog.append("\r\n");
+            iIndex++;
         }
+        Arrays.sort(senserType);
         return null;
-
-    }
-    public BatteryInfoBean getBattery(){
-        int i = 0;
-        BatteryInfoBean batteryInfoBean = new BatteryInfoBean();
-        String[] url={"/sys/class/power_supply/usb/online",
-                "/sys/class/power_supply/battery/status",
-                "/sys/class/power_supply/battery/health",
-                "/sys/class/power_supply/battery/present",
-                "/sys/class/power_supply/battery/capacity",
-                "/sys/class/power_supply/battery/batt_vol",
-                "/sys/class/power_supply/battery/batt_temp",
-                "/sys/class/power_supply/battery/technology"
-        };
-        String[] temp = new String[]{"","","","","","","",""};
-        try {
-            for(i = 0 ; i <= url.length-1;i++){
-            FileReader fr = new FileReader(url[i]);
-            BufferedReader localBufferedReader = new BufferedReader(fr);
-            while ((temp[i]=localBufferedReader.readLine()) != null) {
-            }
-            localBufferedReader.close();
-            }
-        } catch (IOException e) {
-            Log.e("111111111",e.toString());
-        }
-        batteryInfoBean.setUsbOnline(temp[0]);
-        batteryInfoBean.setBatteryStatus(temp[1]);
-        batteryInfoBean.setBatteryHealth(temp[2]);
-        batteryInfoBean.setBatteryPresent(temp[3]);
-        batteryInfoBean.setBatteryCapacity(temp[4]);
-        batteryInfoBean.setBatteryBattVol(temp[5]);
-        batteryInfoBean.setBatteryBattTemp(temp[6]);
-        batteryInfoBean.setBatteryTechnology(temp[7]);
-        return batteryInfoBean;
     }
 }
