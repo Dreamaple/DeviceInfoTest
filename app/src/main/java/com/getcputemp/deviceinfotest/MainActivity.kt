@@ -21,8 +21,8 @@ import org.greenrobot.eventbus.ThreadMode
 import android.content.Context
 import android.hardware.Sensor.*
 import android.hardware.SensorManager
-
-
+import com.getcputemp.deviceinfotest.model.GPUInfoBean
+import com.getcputemp.deviceinfotest.view.DemoGLSurfaceView
 
 
 class MainActivity : AppCompatActivity() {
@@ -173,10 +173,22 @@ class MainActivity : AppCompatActivity() {
                 tv_main_battery_technology.text ="电池技术："+ eventInfoMessage.infoData!!.batteryTechnology
                 tv_main_usb_online.text ="充电方式："+ eventInfoMessage.infoData!!.usbOnline
                 iv_main_battery_icon.setImageResource(eventInfoMessage.infoData!!.iconSmallId)
+                val glView = DemoGLSurfaceView(this@MainActivity)
             }
         }
     }
-
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public fun  eventThread1(eventInfoMessage: EventInfoMessage<GPUInfoBean> ) {
+        when(eventInfoMessage.tempFlag){
+            1->{
+                tv_main_gpu_list.text = """${eventInfoMessage.infoData!!.GLRenderer}
+                    |${eventInfoMessage.infoData!!.GLVersion}
+                    |${eventInfoMessage.infoData!!.GLVendor}
+                    |${eventInfoMessage.infoData!!.GLExtensions}""".trimMargin()
+            }
+        }
+    }
     private fun getSensorList() {
         // 获取传感器管理器
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager

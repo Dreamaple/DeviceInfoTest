@@ -64,15 +64,6 @@ class BatteryInfoBroadcastReceiver:BroadcastReceiver() {// 广播接收器
             eventInfoMessage.tempFlag = 0
 
             EventBus.getDefault().post(eventInfoMessage);
-//        val dialog = AlertDialog.Builder(context)// 创建对话框
-//        .setTitle("电池电量")// 设置标题
-//        .setMessage(
-//                "电池电量为：" + (level * 100 / scale).toString()
-//                + "%")// 设置信息
-//        .setNegativeButton("关闭",
-//                // 设置监听操作  // 设置取消按钮
-//                DialogInterface.OnClickListener { dialog, which -> }).create()// 创建Dialog
-//        dialog.show()// 显示对话框
         }
     }
 
