@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import android.content.Context
-import android.hardware.Sensor
+import android.hardware.Sensor.*
 import android.hardware.SensorManager
 
 
@@ -67,7 +67,52 @@ class MainActivity : AppCompatActivity() {
         tv_main_rom.text = "ROM："+deviceInfo!!.formatSize(deviceInfo!!.romMemroy.get(0))
         tv_main_screen_size.text = "屏幕尺寸"+deviceInfo!!.getScreenSizeInInch(this@MainActivity)
         tv_main_root.text = "ROOT："+deviceInfo!!.hasRootPermission()
-        getSensorList()
+
+//        getSensorList()
+        var senserBooleanArray:BooleanArray=deviceInfo!!.getSenser(this@MainActivity.applicationContext)
+        var i = 0
+        var temp:String
+        var str1 = StringBuffer()
+        for (item in senserBooleanArray){
+            when(i){
+                TYPE_ACCELEROMETER->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("加速度传感器：$temp \n")}
+                TYPE_AMBIENT_TEMPERATURE ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("温度传感器：$temp \n")}
+                TYPE_ACCELEROMETER->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("加速度传感器：$temp \n")}
+                TYPE_GRAVITY ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("重力传感器：$temp \n")}
+                TYPE_GYROSCOPE ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("陀螺仪传感器：$temp \n")}
+                TYPE_LIGHT  ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("光线感应传感器：$temp \n")}
+                TYPE_LINEAR_ACCELERATION ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("线性加速度传感器：$temp \n")}
+                TYPE_MAGNETIC_FIELD ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("磁力传感器传感器：$temp \n")}
+                TYPE_ORIENTATION ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("方向传感器：$temp \n")}
+                TYPE_PRESSURE ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("压力传感器：$temp \n")}
+                TYPE_PROXIMITY ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("接近传感器：$temp \n")}
+                TYPE_RELATIVE_HUMIDITY ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("湿度传感器：$temp \n")}
+                TYPE_ROTATION_VECTOR ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("旋转矢量传感器：$temp \n")}
+                TYPE_SIGNIFICANT_MOTION ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("特殊动作触发传感器：$temp \n")}
+                TYPE_STEP_COUNTER ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("计步传感器：$temp \n")}
+                TYPE_STEP_DETECTOR ->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("步行检测传感器：$temp \n")}
+                TYPE_AMBIENT_TEMPERATURE->{if (item){temp="支持"}else{temp="不支持"}
+                    str1.append("温度传感器：$temp \n")}
+            }
+            i++
+            tv_main_senser_list.text = str1
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tv_main_cpu.text="CPU："+deviceInfo!!.getCpuName()
         }else{
@@ -97,6 +142,7 @@ class MainActivity : AppCompatActivity() {
             b_batteryInfo = !b_batteryInfo
         }
     }
+    @SuppressLint("SetTextI18n")
     private fun takePhoto() {
         tv_main_front_camera.text = "前置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasFrontCamera())
         tv_main_rear_camera.text = "后置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasBackCamera());
@@ -112,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
+    @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun  eventThread(eventInfoMessage: EventInfoMessage<BatteryInfoBean> ) {
         when(eventInfoMessage.tempFlag){
@@ -135,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         // 获取全部传感器列表
-        val sensors = sensorManager.getSensorList(Sensor.TYPE_ALL)
+        val sensors = sensorManager.getSensorList(TYPE_ALL)
 
         // 打印每个传感器信息
         val strLog = StringBuilder()

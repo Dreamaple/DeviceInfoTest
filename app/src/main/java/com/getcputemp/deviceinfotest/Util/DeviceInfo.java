@@ -711,8 +711,8 @@ public class DeviceInfo {
 
     }
 
-    public int[] getSenser(Activity context){
-        int[] senserCompare = {1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20};
+    public boolean[] getSenser(Context context){
+        boolean[] senserCompare = new boolean[21];
         int[] senserType = new int[0];
         // 获取传感器管理器
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -724,7 +724,10 @@ public class DeviceInfo {
         StringBuilder strLog = new StringBuilder();
         int iIndex = 1;
         for (Sensor item : sensors) {
-            senserType[iIndex-1]= Integer.parseInt(item.getName());
+//            senserType[iIndex-1]= Integer.parseInt(item.getName());
+            if(item.getType()>0&&item.getType()<=20){
+                senserCompare[item.getType()]=true;
+            }
 //            strLog.append(iIndex + ".");
 //            strLog.append(" Sensor Type - " + item.getType() + "\r\n");
 //            strLog.append(" Sensor Name - " + item.getName() + "\r\n");
@@ -735,9 +738,9 @@ public class DeviceInfo {
 //            strLog.append(" Power - " + item.getPower() + "\r\n");
 //            strLog.append(" Resolution - " + item.getResolution() + "\r\n");
 //            strLog.append("\r\n");
-            iIndex++;
+//            iIndex++;
         }
         Arrays.sort(senserType);
-        return null;
+        return senserCompare;
     }
 }
