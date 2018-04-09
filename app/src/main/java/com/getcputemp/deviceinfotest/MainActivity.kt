@@ -34,8 +34,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
-        b_baseInfo=if(ll_main_base_info.visibility==View.VISIBLE){true}else{false}
-        b_batteryInfo=if(ll_main_battery_info.visibility==View.VISIBLE){true}else{false}
+        val glView = DemoGLSurfaceView(this@MainActivity)
+        ll_main_glview.addView(glView)
+        b_baseInfo= ll_main_base_info.visibility==View.VISIBLE
+        b_batteryInfo= ll_main_battery_info.visibility==View.VISIBLE
         deviceInfo = DeviceInfo.getInstance(applicationContext)
                 pb_main_loading.visibility = View.VISIBLE
         initView()
@@ -122,9 +124,7 @@ class MainActivity : AppCompatActivity() {
                 ,arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE),200)){
             takePhoto()
         }
-//        tv_main_battery_now.text =
 
-        getBattery()
         btn_main_base_info.setOnClickListener {
             if (b_baseInfo){
                 ll_main_base_info.visibility = View.GONE
@@ -146,6 +146,7 @@ class MainActivity : AppCompatActivity() {
     private fun takePhoto() {
         tv_main_front_camera.text = "前置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasFrontCamera())
         tv_main_rear_camera.text = "后置摄像头："+DeviceInfo.getCameraPixels(DeviceInfo.HasBackCamera());
+        getBattery()
     }
     private fun getBattery(){
         val receiver = BatteryInfoBroadcastReceiver()
@@ -173,7 +174,8 @@ class MainActivity : AppCompatActivity() {
                 tv_main_battery_technology.text ="电池技术："+ eventInfoMessage.infoData!!.batteryTechnology
                 tv_main_usb_online.text ="充电方式："+ eventInfoMessage.infoData!!.usbOnline
                 iv_main_battery_icon.setImageResource(eventInfoMessage.infoData!!.iconSmallId)
-                val glView = DemoGLSurfaceView(this@MainActivity)
+//                val glView = DemoGLSurfaceView(this@MainActivity)
+//                ll_main_glview.addView(glView)
             }
         }
     }

@@ -9,7 +9,7 @@ import android.opengl.GLSurfaceView
 class DemoGLSurfaceView : GLSurfaceView {
     var mRenderer: GetGPURenderer
     constructor(context: Context) : super(context) {
-        setEGLConfigChooser(0xff, 8, 8, 8, 0, 0)
+        setEGLConfigChooser(8, 8, 8, 8, 0, 0)
         mRenderer = GetGPURenderer()
         setRenderer(mRenderer)
     }

@@ -194,6 +194,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_main_gpu_list"/>
+            <LinearLayout
+                android:id="@+id/ll_main_glview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal">
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
