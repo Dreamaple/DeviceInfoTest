@@ -21,14 +21,23 @@ import org.greenrobot.eventbus.ThreadMode
 import android.content.Context
 import android.hardware.Sensor.*
 import android.hardware.SensorManager
+import android.os.Handler
 import com.getcputemp.deviceinfotest.model.GPUInfoBean
 import com.getcputemp.deviceinfotest.view.DemoGLSurfaceView
+import java.text.DecimalFormat
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
-    var deviceInfo:DeviceInfo?=null
-    var b_baseInfo:Boolean = true
-    var b_batteryInfo:Boolean = true
+    private var deviceInfo:DeviceInfo?=null
+    private var b_baseInfo:Boolean = true
+    private var b_batteryInfo:Boolean = true
+    private var cpuMaxList: MutableList<String> = ArrayList()
+    private var cpuMinList: MutableList<String> = ArrayList()
+    private var cpuCurList: MutableList<String> = ArrayList()
+    private var mCPUCoreNum:Int = DeviceInfo.getNumCores()
+    private val handler = Handler()
+    private var flag:Boolean = true
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,20 +48,18 @@ class MainActivity : AppCompatActivity() {
         b_baseInfo= ll_main_base_info.visibility==View.VISIBLE
         b_batteryInfo= ll_main_battery_info.visibility==View.VISIBLE
         deviceInfo = DeviceInfo.getInstance(applicationContext)
-                pb_main_loading.visibility = View.VISIBLE
-        initView()
+        pb_main_loading.visibility = View.VISIBLE
+
 //        tv_main_phone_modle.
-        pb_main_loading.visibility=View.GONE
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.size > 0) {
+        if (grantResults.isNotEmpty()) {
 
-            for (result in grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED)
-                    return
-            }
+            grantResults
+                    .filter { it != PackageManager.PERMISSION_GRANTED }
+                    .forEach { return }
             when (requestCode) {
                 200 -> takePhoto()
             }
@@ -155,10 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        EventBus.getDefault().unregister(this)
-    }
+
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun  eventThread(eventInfoMessage: EventInfoMessage<BatteryInfoBean> ) {
@@ -174,6 +178,7 @@ class MainActivity : AppCompatActivity() {
                 tv_main_battery_technology.text ="电池技术："+ eventInfoMessage.infoData!!.batteryTechnology
                 tv_main_usb_online.text ="充电方式："+ eventInfoMessage.infoData!!.usbOnline
                 iv_main_battery_icon.setImageResource(eventInfoMessage.infoData!!.iconSmallId)
+                pb_main_loading.visibility=View.GONE
 //                val glView = DemoGLSurfaceView(this@MainActivity)
 //                ll_main_glview.addView(glView)
             }
@@ -185,9 +190,7 @@ class MainActivity : AppCompatActivity() {
         when(eventInfoMessage.tempFlag){
             1->{
                 tv_main_gpu_list.text = """${eventInfoMessage.infoData!!.GLRenderer}
-                    |${eventInfoMessage.infoData!!.GLVersion}
-                    |${eventInfoMessage.infoData!!.GLVendor}
-                    |${eventInfoMessage.infoData!!.GLExtensions}""".trimMargin()
+                    |${eventInfoMessage.infoData!!.GLVendor}""".trimMargin()
             }
         }
     }
@@ -218,5 +221,58 @@ class MainActivity : AppCompatActivity() {
         tv_main_senser_list.text=strLog.toString()
     }
 
+    private fun cpuInfoThread(){
+        object : Thread() {
+            override fun run() {//在run()方法实现业务逻辑；
+                //...
+                initView()
+                var strb1:StringBuffer= StringBuffer()
+                while (flag) {
+                    strb1.setLength(0)
+                    cpuMaxList.clear()
+                    cpuMinList.clear()
+                    cpuCurList.clear()
+                    strb1.append("CPU核心数：$mCPUCoreNum\n")
+                for (i in 0 until mCPUCoreNum) {
+                    cpuMaxList.add(getKHz(DeviceInfo.getMaxCpuFreq(i)))
+                    cpuMinList.add(getKHz(DeviceInfo.getMinCpuFreq(i)))
+                    cpuCurList.add(getKHz(DeviceInfo.getCurCpuFreq(i)))
+                    strb1.append("Cpu$i Max:${cpuMaxList.get(i)} Min:${cpuMinList.get(i)} Cur:${cpuCurList.get(i)}\n")
+                }
+                    handler.post {
+                        if (flag){
+                            tv_main_cpu_info.setText(strb1)
+                        }
+                    }
+                    sleep(1000)
+                }
+            }
+        }.start()
+    }
 
+    private fun getKHz(hzStr: String): String {
+        try {
+            val hz = Integer.parseInt(hzStr)
+            val df = DecimalFormat("###.0")
+            return df.format(hz.toDouble() / 1000)
+        } catch (e: Exception) {
+            return "N/A"
+        }
+
+    }
+
+    override fun onResume() {
+        flag = true
+        cpuInfoThread()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        flag = false
+        super.onPause()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 }
