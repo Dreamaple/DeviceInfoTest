@@ -220,7 +220,7 @@ public class DeviceInfo {
             	return "";
             }
             Signature sign = signs[0];
-            String signMd5 = MD5Util.encodeByMD5(sign.toCharsString());
+            String signMd5 = MD5Util.INSTANCE.encodeByMD5(sign.toCharsString());
             return signMd5;
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,7 +317,7 @@ public class DeviceInfo {
 	public int getNetWorkType()
 	{
 		//int network = tm.getNetworkType();
-		int network = NetworkUtil.getNetWorkType(context);
+		int network = NetworkUtil.INSTANCE.getNetWorkType(context);
 		return network;
 	}
 
