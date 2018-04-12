@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity() {
                     str1.append("温度传感器：$temp \n")}
             }
             i++
+            if(!str1.none())
             tv_main_senser_list.text = str1
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -225,7 +226,6 @@ class MainActivity : AppCompatActivity() {
         object : Thread() {
             override fun run() {//在run()方法实现业务逻辑；
                 //...
-                initView()
                 var strb1:StringBuffer= StringBuffer()
                 while (flag) {
                     strb1.setLength(0)
@@ -264,6 +264,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         flag = true
         cpuInfoThread()
+        initView()
         super.onResume()
     }
 
